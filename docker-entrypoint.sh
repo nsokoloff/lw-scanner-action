@@ -47,7 +47,7 @@ rm ${GITHUB_WORKSPACE}/evaluations/${INPUT_IMAGE_NAME}/${INPUT_IMAGE_TAG}/evalua
   --policy \
   --fail-on-violation-exit-code 1 ${SCANNER_PARAMETERS} | tee results.stdout
 
-exit_code=$?
+exit_code=${PIPESTATUS[0]}
 echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
 
 if [ "${INPUT_RESULTS_IN_GITHUB_SUMMARY}" = "true" ]; then
