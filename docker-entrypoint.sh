@@ -47,8 +47,14 @@ rm ${GITHUB_WORKSPACE}/evaluations/${INPUT_IMAGE_NAME}/${INPUT_IMAGE_TAG}/evalua
   --policy \
   --fail-on-violation-exit-code 1 ${SCANNER_PARAMETERS} | tee results.stdout
 
-exit_code=${PIPESTATUS[0]}
+psall=(${PIPESTATUS[@]})
+exit_code=${psall[0]}
+
 echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+echo "pipestatus: ${psall[@]}"
+echo "lw-scanner exit_code: $exit_code"
+ps=`typeset -p PIPESTATUS`
+echo "pipestatus type: $ps"
 
 if [ "${INPUT_RESULTS_IN_GITHUB_SUMMARY}" = "true" ]; then
     echo "### Security Scan" >> $GITHUB_STEP_SUMMARY
@@ -58,4 +64,3 @@ if [ "${INPUT_RESULTS_IN_GITHUB_SUMMARY}" = "true" ]; then
 fi
 
 exit $exit_code
-
