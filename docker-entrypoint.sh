@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 export LW_ACCOUNT_NAME=${INPUT_LW_ACCOUNT_NAME}
 export LW_ACCESS_TOKEN=${INPUT_LW_ACCESS_TOKEN}
@@ -45,16 +45,12 @@ rm ${GITHUB_WORKSPACE}/evaluations/${INPUT_IMAGE_NAME}/${INPUT_IMAGE_TAG}/evalua
   --build-id ${GITHUB_RUN_ID} \
   --data-directory ${GITHUB_WORKSPACE} \
   --policy \
-  --fail-on-violation-exit-code 1 ${SCANNER_PARAMETERS} | tee results.stdout
+  --fail-on-violation-exit-code 1 ${SCANNER_PARAMETERS} > results.stdout
 
-psall=(${PIPESTATUS[@]})
-exit_code=${psall[0]}
+exit_code=$?
 
 echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
-echo "pipestatus: ${psall[@]}"
-echo "lw-scanner exit_code: $exit_code"
-ps=`typeset -p PIPESTATUS`
-echo "pipestatus type: $ps"
+echo "exit_code: $exit_code"
 
 if [ "${INPUT_RESULTS_IN_GITHUB_SUMMARY}" = "true" ]; then
     echo "### Security Scan" >> $GITHUB_STEP_SUMMARY
