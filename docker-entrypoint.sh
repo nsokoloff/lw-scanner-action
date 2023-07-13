@@ -53,3 +53,7 @@ if [ "${INPUT_RESULTS_IN_GITHUB_SUMMARY}" = "true" ]; then
     cat results.stdout >> $GITHUB_STEP_SUMMARY
     echo "</pre>" >> $GITHUB_STEP_SUMMARY
 fi
+
+exit_code=$?
+echo "::set-output name=exit-code::$exit_code"
+exit $exit_code
